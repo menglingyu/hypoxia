@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root::@localhost:3306/zhihu"
+}
+
+model Post {
+  authorId   Int?
+  content    String
+  id         Int       @id @default(autoincrement())
+  published  Boolean   @default(false)
+  title      String?
+  interactId Int?
+  author     User?     @relation(fields: [authorId], references: [id])
+  interact   Interact? @relation(fields: [interactId], references: [id])
+  comments   Comment[]
+  createdAt  DateTime  @default(now())
+
+  @@index([authorId], name: "authorId")
+  @@index([interactId], name: "interactId")
+}
+
+model User {
+  email           String   @unique
+  id              Int      @id @default(autoincrement())
+  name            String?
+  uuid            String   @unique
+  avatarUrl       String?
+  password        String?
+  circles         Circle[]
+  posts           Post[]
+  valuePostIds    String?
+  interestPostIds String?
+  hatePostIds     String?
+
+  Comment Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  userId    Int?
+  toUid     Int?
+  createdAt DateTime @default(now())
+
+
+  user       User?     @relation(fields: [userId], references: [id])
+  Post       Post?     @relation(fields: [postId], references: [id])
+  postId     Int?
+  interactId Int?
+  interact   Interact? @relation(fields: [interactId], references: [id])
+}
+
+model Circle {
+  id          Int    @id @default(autoincrement())
+  title       String
+  picUrl      String
+  memberCount Int
+  userId      Int?
+  User        User?  @relation(fields: [userId], references: [id])
+
+  @@index([userId], name: "userId")
+}
+
+model Question {
+  id                   Int     @id @default(autoincrement())
+  question_content     String
+  question_detail      String
+  published_uid        Int
+  answer_count         Int     @default(0)
+  answer_users         Int     @default(0)
+  view_count           Int     @default(0)
+  focus_count          Int     @default(0)
+  comment_count        Int     @default(0)
+  category_id          Int     @default(0)
+  agree_count          Int     @default(0)
+  against_count        Int     @default(0)
+  yesapi_question_lock Boolean @default(false)
+  anonymous            Boolean @default(false)
+  thanks_count         Int     @default(0)
+}
+
+model topic {
+  id                Int      @id @default(autoincrement())
+  topic_title       String?
+  discuss_count     Int?     @default(0)
+  topic_description String?
+  topic_pic         String?
+  topic_lock        Int?     @default(0)
+  focus_count       Int?     @default(0)
+  seo_title         String?
+  parent_id         Int?     @default(0)
+  is_parent         Boolean? @default(false)
+}
+
+model Interact {
+  id          Int     @id @default(autoincrement())
+  postId      Int?    @unique
+  commentId   Int?    @unique
+  valueUid    String?
+  interestUid String?
+  hateUid     String?
+  thinkUid    String?
+  handUid     String?
+
+  valueCount    Int?      @default(0)
+  interestCount Int?      @default(0)
+  hateCount     Int?      @default(0)
+  thinkCount    Int?      @default(0)
+  againstCount  Int?      @default(0)
+  handCount     Int?      @default(0)
+  Post          Post[]
+  Comment       Comment[]
+}

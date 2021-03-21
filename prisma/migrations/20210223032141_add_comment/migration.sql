@@ -1,0 +1,11 @@
+-- AlterTable
+ALTER TABLE `Post` ADD COLUMN     `commentsId` INT;
+
+-- AddForeignKey
+ALTER TABLE `comment` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `comment` ADD FOREIGN KEY (`toId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Post` ADD FOREIGN KEY (`commentsId`) REFERENCES `comment`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

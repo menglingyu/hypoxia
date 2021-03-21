@@ -1,0 +1,6 @@
+export * as User from './User'
+export * as Query from './Query'
+export * as Post from './Post'
+export * as Comment from './Comment'
+export * as Mutation from './Mutation'
+export * as Interact from './Interact'

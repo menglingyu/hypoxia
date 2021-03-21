@@ -1,0 +1,2 @@
+-- AddForeignKey
+ALTER TABLE `Comment` ADD FOREIGN KEY (`interactId`) REFERENCES `Interact`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
