@@ -1,10 +1,11 @@
-import { getToken, logout } from '../lib/getToken'
+// import { getToken, logout } from '../lib/getToken'
 import { onError } from "@apollo/client/link/error";
 import { toast } from 'react-toastify'
 import { CODE } from '../constants';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 
 import { typePolicies, } from './schema';
+import { tokenVar } from "../lib/client-cache";
 
 const SERVER_URI = 'http://localhost:3000/api';
 
@@ -20,7 +21,13 @@ export const createHttpLink = (uri = SERVER_URI) => {
         )
         toast.error(message)
 
-        if (message.includes(CODE.TOKEN_ERROR)) logout()
+        if (message.includes(CODE.TOKEN_ERROR)) {
+          global.location.replace('/signup')
+          global.localStorage.removeItem('token')
+          global.localStorage.removeItem('userInfo')
+
+          isLoggedInVar(false)
+        }
 
       });
 
@@ -31,7 +38,7 @@ export const createHttpLink = (uri = SERVER_URI) => {
   const httpLink = new HttpLink({
     uri,
     credentials: 'same-origin',
-    headers: { authorization: getToken() }
+    headers: { authorization: tokenVar() }
   });
   return ApolloLink.from([errorLink, httpLink,])
 };

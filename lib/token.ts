@@ -16,7 +16,15 @@ interface DecodedToken {
 export const decodedToken: DecodedToken = (req) => {
   const authorization = req.headers.authorization
 
-  if (!authorization || authorization === 'null') return null
+  if (
+    !authorization ||
+    authorization === 'null' ||
+    authorization === 'undefined'
+  ) {
+    return null
+  }
+
+  console.log('authorizationauthorization', authorization)
 
   const token = authorization.replace('Bearer ', '')
 
