@@ -5,7 +5,7 @@ import { CODE } from '../constants';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 
 import { typePolicies, } from './schema';
-import { tokenVar } from "../lib/client-cache";
+import { tokenVar, isLoggedInVar } from "../lib/client-cache";
 
 const SERVER_URI = 'http://localhost:3000/api';
 
