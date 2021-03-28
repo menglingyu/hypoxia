@@ -108,7 +108,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
 }))
 
-const CustomCard = ({ styles, cover, logo, title, brand, date }) => {
+const CustomCard = ({ styles, cover, logo, title, brand, date }: any) => {
   const mediaStyles = useCoverCardMediaStyles()
   return (
     <Box className={cx(styles.root, styles.color)} pt={20}>
@@ -159,7 +159,6 @@ const UserBanner = function HighlightCard({ author }: { author: any }) {
           <CustomCard
             styles={styles1}
             brand={author.name}
-            // date={'02.04.2020'}
             cover={author.avatarUrl}
             logo={author.avatarUrl}
             title={<>{author.name}</>}

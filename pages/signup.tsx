@@ -97,7 +97,7 @@ function Signup(props) {
       <TopBanner />
       <header className={classes.top}>
         <Typography className={classes.h2} variant="h4">
-          与富有善意的思考者们友好地讨论问题
+          真正的自由是不收社会的惯性控制
         </Typography>
       </header>
       <div className={classes.root}>

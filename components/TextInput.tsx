@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 
 import { useMutation, gql } from '@apollo/client'
 
-import { Box } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import 'braft-editor/dist/index.css'
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over'
 import 'braft-editor/dist/index.css'
@@ -101,17 +101,13 @@ export const TextInput = () => {
 }
 
 export const TextInputCard = () => {
-  const styles = useOverShadowStyles({
-    // inactive: true, // add this line to disable hover effect
-  })
+  const styles = useOverShadowStyles({})
   return (
-    <Box
-      style={{ margin: '10px 0 30px 0' }}
-      width={'100%'}
-      borderRadius={16}
+    <Grid
+      style={{ margin: '10px 0 30px 0', borderRadius: '12px' }}
       classes={styles}
     >
       <TextInput />
-    </Box>
+    </Grid>
   )
 }

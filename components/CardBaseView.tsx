@@ -30,7 +30,7 @@ export const CardBaseView = ({ avatar, name, children }) => {
   return (
     <Grid className={styles.root}>
       <Grid className={styles.box}>
-        <Avatar src={avatar} aria-label="recipe"></Avatar>
+        <Avatar src={avatar}></Avatar>
         <Typography className={styles.text}>{name}</Typography>
       </Grid>
       <Grid className={styles.content}>{children}</Grid>
