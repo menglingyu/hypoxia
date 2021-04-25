@@ -1,17 +1,45 @@
-name: GitHub Actions Demo
-on: [push]
+# 可以按需求修改,比如push,pull_requesy某个分支时执行CI
+# 因为我是yarn,如果npm就直接使用npm
+# 某个步骤报错,action执行的时候也可能显示通过图标,小心踩坑
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+
 jobs:
-  Explore-GitHub-Actions:
+  build:
+
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    # 如果写了测试用例,也可以自动测试
+    - run: yarn install
+    - run: yarn build
+      env:
+        CI: true
+    - name: Deploy
+      # 使用此action，也可在官方市场选择其他action
+      uses: easingthemes/ssh-deploy@v2.0.7
+      env:
+        # Private Key secrets.ALIYUN就是刚才配置的密钥名
+        SSH_PRIVATE_KEY: ${{ secrets.ALIYUN }}
+        # For any initial/required rsync flags
+        ARGS:  "-rltgoDzvO --delete"
+        # Source directory dist/ 需要到远端服务器的文件目录 **填入自己的打包路径**
+        SOURCE: "dist/"
+        # Remote host **填入自己的域名**
+        REMOTE_HOST: "59.110.55.135"
+        # Remote user **填入自己的用户,一般都是root用户**
+        REMOTE_USER: "root"
+        # Target directory 此处填写的是我博客域名下的action pacth下 **填入自己的域名路径**
+        TARGET: "/home/hypoxia"
